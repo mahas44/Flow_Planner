@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Flow Planner</string>
+    <string name="description">Description</string>
+    <string name="plan_name">Plan Name</string>
+    <string name="category">Category</string>
+    <string name="save_button">Save</string>
+    <string name="create_plan">Create New Plan</string>
+    <string name="create_job">Create New Job</string>
+    <string name="job_name">Job Name</string>
+    <string name="deadline">Deadline</string>
+    <string name="start_time">Start Time</string>
+    <string name="jobs">Jobs for this Plan</string>
+</resources>
