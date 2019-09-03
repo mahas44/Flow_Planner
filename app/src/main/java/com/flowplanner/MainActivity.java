@@ -1,19 +1,21 @@
 package com.flowplanner;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RemoteViews;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
@@ -24,8 +26,9 @@ public class MainActivity extends AppCompatActivity{
 
 
     private PlanListItemAdapter planListItemAdapter;
-    private JobListItemAdapter jobListItemAdapter;
     List<PlanEntity> list;
+
+    private NotificationManagerCompat notificationManagerCompat;
 
 
     @Override
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        notificationManagerCompat = NotificationManagerCompat.from(this);
 
         recyclerView = findViewById(R.id.recyclerView);
         floatingActionButton = findViewById(R.id.addTaskFloatingActionButton);
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showNotification();
                 Intent intent = new Intent(getApplicationContext(), PlanManager.class);
                 startActivity(intent);
             }
@@ -63,7 +68,6 @@ public class MainActivity extends AppCompatActivity{
         list = db.planDao().getAll();
         if (list != null){
             planListItemAdapter = new PlanListItemAdapter(getApplicationContext(),list);
-            //jobListItemAdapter = new JobListItemAdapter(getApplicationContext(),listj);
             recyclerView.setAdapter(planListItemAdapter);
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -85,4 +89,25 @@ public class MainActivity extends AppCompatActivity{
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    public void showNotification(){
+
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification);
+        RemoteViews remoteViewsExpanded = new RemoteViews(getPackageName(), R.layout.notification_expanded);
+
+        Intent clickIntent = new Intent(this, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0, clickIntent,0);
+
+        remoteViewsExpanded.setOnClickPendingIntent(R.id.imageView_expanded, pendingIntent);
+
+        Notification notification = new NotificationCompat.Builder(this, "FlowPlanner")
+                .setSmallIcon(R.drawable.plus_icon_32)
+                .setCustomContentView(remoteViews)
+                .setCustomBigContentView(remoteViewsExpanded)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .build();
+
+        notificationManagerCompat.notify(1, notification);
+    }
+
 }

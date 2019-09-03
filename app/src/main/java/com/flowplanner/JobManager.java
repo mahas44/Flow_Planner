@@ -13,7 +13,8 @@ public class JobManager extends AppCompatActivity {
     EditText jobNameET, startTimeET, deadlineET;
     Button saveBtn;
 
-    String planName;
+    String planName = "planName";
+    String pName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class JobManager extends AppCompatActivity {
         setContentView(R.layout.activity_job_manager);
 
 
-        planName = getIntent().getStringExtra("planName");
+        pName = getIntent().getStringExtra(planName);
 
 
         jobNameET = findViewById(R.id.jobNameET);
@@ -37,7 +38,7 @@ public class JobManager extends AppCompatActivity {
                 String startTime = startTimeET.getText().toString();
                 String deadline = deadlineET.getText().toString();
 
-                JobEntity job = new JobEntity(planName,jobName,startTime,deadline);
+                JobEntity job = new JobEntity(pName,jobName,startTime,deadline);
 
                 AppDatabase.getDatabase(getApplicationContext()).jobDao().insert(job);
 

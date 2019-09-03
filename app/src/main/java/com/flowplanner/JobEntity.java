@@ -11,10 +11,10 @@ public class JobEntity {
     @NotNull
     @PrimaryKey(autoGenerate = true)
     int id;
-    String planName;
-    String name;
-    String startTime;
-    String deadline;
+    private String planName;
+    private String name;
+    private String startTime;
+    private String deadline;
 
 
     public JobEntity(String planName, String name, String startTime, String deadline) {
