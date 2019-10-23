@@ -3,23 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PlanManager">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/create_plan"
-        android:textAlignment="center"
-        android:textColor="@color/text_color"
-        android:textColorHint="@android:color/secondary_text_dark_nodisable"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/planNameET"
-        app:layout_constraintStart_toStartOf="@+id/planNameET"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent" >
 
     <EditText
         android:id="@+id/planNameET"
@@ -34,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/categoryET"

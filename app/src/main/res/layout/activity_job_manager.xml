@@ -3,23 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".JobManager">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/create_job"
-        android:textAlignment="center"
-        android:textColor="@color/text_color"
-        android:textColorHint="@android:color/secondary_text_dark_nodisable"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/jobNameET"
-        app:layout_constraintStart_toStartOf="@+id/jobNameET"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent" >
 
     <EditText
         android:id="@+id/jobNameET"
@@ -34,16 +18,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/startTimeET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/start_time"
-        android:inputType="textPersonName"
+        android:inputType="datetime"
         app:layout_constraintEnd_toEndOf="@+id/jobNameET"
         app:layout_constraintStart_toStartOf="@+id/jobNameET"
         app:layout_constraintTop_toBottomOf="@+id/jobNameET" />
@@ -57,8 +43,8 @@
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/deadline"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/startTimeET"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/spinner"
         app:layout_constraintStart_toStartOf="@+id/startTimeET"
         app:layout_constraintTop_toBottomOf="@+id/startTimeET" />
 
@@ -75,6 +61,14 @@
         app:layout_constraintEnd_toEndOf="@+id/deadlineET"
         app:layout_constraintTop_toBottomOf="@+id/deadlineET" />
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/deadlineET"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/deadlineET" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

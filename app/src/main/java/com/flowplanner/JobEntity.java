@@ -15,13 +15,15 @@ public class JobEntity {
     private String name;
     private String startTime;
     private String deadline;
+    private String deadlineTime;
 
 
-    public JobEntity(String planName, String name, String startTime, String deadline) {
+    public JobEntity(String planName, String name, String startTime, String deadline, String deadlineTime) {
         this.planName = planName;
         this.name = name;
         this.startTime = startTime;
         this.deadline = deadline;
+        this.deadlineTime = deadlineTime;
     }
 
     public int getId() {
@@ -62,5 +64,13 @@ public class JobEntity {
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+    }
+
+    public String getDeadlineTime() {
+        return deadlineTime;
+    }
+
+    public void setDeadlineTime(String deadlineTime) {
+        this.deadlineTime = deadlineTime;
     }
 }

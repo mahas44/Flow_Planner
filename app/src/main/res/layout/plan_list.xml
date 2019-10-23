@@ -24,11 +24,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/plus_icon_32"
+                android:src="@drawable/ic_add_circle"
                 android:textAlignment="gravity"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/planListNameTV"
-                app:srcCompat="@drawable/plus_icon_32"
+                app:srcCompat="@drawable/ic_add_circle"
                 android:contentDescription="TODO">
 
             </ImageView>

@@ -39,13 +39,14 @@ public class JobListItemAdapter extends RecyclerView.Adapter<JobListItemAdapter.
         job = jobArrayList.get(position);
         holder.name.setText(String.format(" : %s", job.getName()));
         holder.startTime.setText(String.format(" : %s",job.getStartTime()));
-        holder.deadline.setText(String.format(" : %s",job.getDeadline()));
+        holder.deadline.setText(String.format(" : %s",job.getDeadline()) +" "+ job.getDeadlineTime());
 
         holder.deleteJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppDatabase.getDatabase(context).jobDao().delete(job);
                 jobArrayList.remove(position);
+                notifyDataSetChanged();
             }
         });
     }

@@ -1,83 +1,71 @@
 package com.flowplanner;
 
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.RemoteViews;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity{
-
-    FloatingActionButton floatingActionButton;
-    RecyclerView recyclerView;
-    private SwipeRefreshLayout swipeRefreshLayout;
+import com.google.android.material.navigation.NavigationView;
 
 
-    private PlanListItemAdapter planListItemAdapter;
-    List<PlanEntity> list;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private NotificationManagerCompat notificationManagerCompat;
-
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        notificationManagerCompat = NotificationManagerCompat.from(this);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        floatingActionButton = findViewById(R.id.addTaskFloatingActionButton);
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        refreshData();
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showNotification();
-                Intent intent = new Intent(getApplicationContext(), PlanManager.class);
-                startActivity(intent);
-            }
-        });
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshData();
-            }
-        });
-
-    }
-
-    private void refreshData(){
-        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
-        list = db.planDao().getAll();
-        if (list != null){
-            planListItemAdapter = new PlanListItemAdapter(getApplicationContext(),list);
-            recyclerView.setAdapter(planListItemAdapter);
-            swipeRefreshLayout.setRefreshing(false);
+        if (savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
         }
-        swipeRefreshLayout.setRefreshing(false);
+
     }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (toggle.onOptionsItemSelected(item)){
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        refreshData();
+
     }
 
     @Override
@@ -90,24 +78,38 @@ public class MainActivity extends AppCompatActivity{
         super.onDestroy();
     }
 
-    public void showNotification(){
 
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification);
-        RemoteViews remoteViewsExpanded = new RemoteViews(getPackageName(), R.layout.notification_expanded);
 
-        Intent clickIntent = new Intent(this, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0, clickIntent,0);
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        remoteViewsExpanded.setOnClickPendingIntent(R.id.imageView_expanded, pendingIntent);
+        switch (menuItem.getItemId()){
+            case R.id.nav_plan:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PlanFragment()).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
 
-        Notification notification = new NotificationCompat.Builder(this, "FlowPlanner")
-                .setSmallIcon(R.drawable.plus_icon_32)
-                .setCustomContentView(remoteViews)
-                .setCustomBigContentView(remoteViewsExpanded)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .build();
+            case R.id.nav_home:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
 
-        notificationManagerCompat.notify(1, notification);
+            case R.id.nav_logout:
+                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                finishAffinity();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_send:
+                Toast.makeText(this, "Send", Toast.LENGTH_SHORT).show();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+        }
+
+
+        return true;
     }
-
 }
